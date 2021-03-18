@@ -4,47 +4,32 @@ import java.util.ArrayList;
 
 public class Test {
     public static void main(String[] args) throws IOException {
-        ArrayList<Land> landListe = new ArrayList<Land>();
+        //In landListe werden die Objekte der Klasse Land verwantet
+        ArrayList<Land> landListe = new ArrayList<>();
 
+        //names wird benötigt, um die Objetke der Klasse Land entsprechend mit name und tdl zu erstellen
         ArrayList<String> names = new ArrayList<>();
 
+        //das Dokument "C:\\demo\\flag.txt" wird eingescannt und in names eingefügt
         try (BufferedReader br = new BufferedReader(new FileReader("C:\\demo\\flag.txt"))) {
             while (br.ready()) {
                 names.add(br.readLine());
             }
         }
 
-        /*
-        int laenge = 0;
-
-        try {
-            File file = new File("C:\\demo\\flag.txt");
-            FileInputStream fis = new FileInputStream(file);
-
-            System.out.println("file content: ");
-            int r;
-
-
-            while ((r = fis.read()) != -1) {
-                if (r==0){
-                    laenge++;
-                }else {
-                    System.out.print((char) r);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-
+        //Die Objekte der Klasse Land werden erstellt und in landListe eingefügt
         for (int i = 0; i < names.size(); i++) {
              String n = names.get(i);
-             landListe.add(new Land(n,i,"/"));
+             String[] constructArray = n.split("/"); //aus dem String "name/tdl" wir dein Array [name,tdl]
+             String flagDir = "C:\\demo\\flags\\"+constructArray[1];
+
+             landListe.add(new Land(constructArray[0],i,flagDir,constructArray[1]));
         }
 
-
+        //Es wir eine Zufällige Zahl generiert
         int b = (int) (Math.random() * landListe.size());
 
+        //Das zugehörige Objekt in landListe wird ausgegeben
         System.out.println(landListe.get(b).getName());
     }
 }
