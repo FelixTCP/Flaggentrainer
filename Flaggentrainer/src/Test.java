@@ -21,8 +21,9 @@ public class Test {
         for (int i = 0; i < names.size(); i++) {
              String n = names.get(i);
              String[] constructArray = n.split("/"); //aus dem String "name/tdl" wir dein Array [name,tdl]
+             String flagDir = "C:\\demo\\flags\\"+constructArray[1];
 
-             landListe.add(new Land(constructArray[0],i,"/",constructArray[1]));
+             landListe.add(new Land(constructArray[0],i,flagDir,constructArray[1]));
         }
 
         //Es wir eine Zufällige Zahl generiert
