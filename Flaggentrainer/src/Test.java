@@ -11,7 +11,7 @@ public class Test {
         ArrayList<String> names = new ArrayList<>();
 
         //das Dokument "C:\\demo\\flag.txt" wird eingescannt und in names eingefügt
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\demo\\flag.txt"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("\\Flaggentrainer\\resources\\flag.txt"))) {
             while (br.ready()) {
                 names.add(br.readLine());
             }
@@ -21,7 +21,7 @@ public class Test {
         for (int i = 0; i < names.size(); i++) {
              String n = names.get(i);
              String[] constructArray = n.split("/"); //aus dem String "name/tdl" wir dein Array [name,tdl]
-             String flagDir = "C:\\demo\\flags\\"+constructArray[1];
+             String flagDir = "\\Flaggentrainer\\resources\\flags\\"+constructArray[1];
 
              landListe.add(new Land(constructArray[0],i,flagDir,constructArray[1]));
         }
