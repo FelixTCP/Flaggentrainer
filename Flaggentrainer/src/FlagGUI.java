@@ -3,21 +3,28 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class FlagGUI extends Application {
 
     static ArrayList<Land> landListe;
+    static int richtigCounter;
+    static int falschCounter;
 
     static {
         try {
@@ -29,7 +36,7 @@ public class FlagGUI extends Application {
 
     TextField inputField;
     Button startButton, checkButton;
-    Label resultLabel;
+    static Label resultLabel,richtigLabel,falschLabel,prozentLabel;
     Scene startScene, mainScene;
 
     public static void main(String[] args) {
@@ -45,25 +52,24 @@ public class FlagGUI extends Application {
 
         //Es wird eine zufällige zu erratende Flagge bestimmt
         //Es wird eine Zufällige Land ID generiert
-        int id = (int) (Math.random() * landListe.size());
+        AtomicInteger id = new AtomicInteger((int) (Math.random() * landListe.size()));
         //Das Flammenimage für das GUI wird initialisiert und konfiguriert
-        InputStream flagDir = new FileInputStream(landListe.get(id).getFlag());
+        InputStream flagDir = new FileInputStream(landListe.get(id.get()).getFlag());
         Image image = new Image(flagDir);
         ImageView flagImage = new ImageView(image);
-        flagImage.setImage(image);
-        flagImage.setX(10);
-        flagImage.setY(10);
         flagImage.setFitWidth(1000);
         flagImage.setPreserveRatio(true);
 
         //Das zugehörige Objekt in landListe wird ausgegeben - for Debug
-        System.out.println(landListe.get(id).getName());
-
+        System.out.println(landListe.get(id.get()).getName());
         //Startmenu wird erstellt
         //Es wird ein Startbutton erstellt
         startButton = new Button("Start");
         //Beim klicken öffnet sich der Trainer
-        startButton.setOnAction(e -> window.setScene(mainScene));
+        startButton.setOnAction(event -> {
+                window.setScene(mainScene);
+                window.setFullScreen(true);
+        });
         //Der Knopf wird dem Layout und das Layout der Szene hinzugefügt
         HBox startLayout = new HBox(20);
         startLayout.getChildren().addAll(startButton);
@@ -78,6 +84,24 @@ public class FlagGUI extends Application {
         resultBox.getChildren().addAll(resultLabel);
         resultBox.setAlignment(Pos.CENTER);
 
+        //In counterBox wird der counter Etabliert
+        VBox counterBox = new VBox();
+        richtigLabel = new Label();
+        String r = "Richtig: ";
+        richtigLabel.setText(r + richtigCounter);
+        richtigLabel.setStyle("-fx-font-size: 24px;");
+        falschLabel = new Label();
+        String f = "Falsch: ";
+        falschLabel.setText(f + falschCounter);
+        falschLabel.setStyle("-fx-font-size: 24px;");
+        prozentLabel = new Label();
+        counterBox.getChildren().addAll(richtigLabel,falschLabel);
+        VBox perrcentBox = new VBox();
+        String p = "Prozent: ";
+        prozentLabel.setText(p + 0+"%");
+        prozentLabel.setStyle("-fx-font-size: 24px;");
+        perrcentBox.getChildren().addAll(prozentLabel);
+
         //In flagPic wird das Flaggenimage angezeigt
         HBox flagPic = new HBox();
         flagPic.getChildren().add(flagImage);
@@ -88,18 +112,16 @@ public class FlagGUI extends Application {
         inputField = new TextField();
         checkButton = new Button("Check");
         checkButton.setOnAction(event -> {
-            String inputString = inputField.getText();
-            inputString = format(inputString);
-            //Wenn die Eingabe mit dem Namen oder der TDL übereinstimmt
-            if (inputString.equals(landListe.get(id).getName()) || inputString.equals(landListe.get(id).getTDL())) {
-                System.out.println("True");
-                resultLabel.setText("Richtig!");
-                resultLabel.setStyle("-fx-text-fill: green; -fx-font-size: 24px;");
-            } else /*Wenn die Eingabe nich mit dem Namen oder der TDL übereinstimm*/ {
-                System.out.println("False");
-                resultLabel.setText("Falsch! Das ist die Flagge von " + reverseFormat(landListe.get(id).getName()));
-                resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 24px;");
-            }
+            //Die Ergebnisse werden ermittelt
+            getResult(inputField.getText(),id);
+            //Die Labels werden geupdated
+            updateLabels();
+            //Ein neues Bild wird ausgelost
+            Image newImage = new Image(newFlag(id));
+            //Das neue Bild wird gesetzt
+            flagImage.setImage(newImage);
+            //Das Eingabefeld wird zurückgesetzt
+            inputField.clear();
         });
         eingabe.getChildren().addAll(inputField, checkButton);
         eingabe.setAlignment(Pos.BASELINE_CENTER);
@@ -107,12 +129,14 @@ public class FlagGUI extends Application {
 
         //Alle GUI Elemente werden zusammengefügt
         BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(flagPic);
-        borderPane.setBottom(eingabe);
         borderPane.setTop(resultBox);
+        borderPane.setLeft(counterBox);
+        borderPane.setCenter(flagPic);
+        borderPane.setRight(perrcentBox);
+        borderPane.setBottom(eingabe);
 
         //Das GUI Fenster wird final konfiguruert
-        mainScene = new Scene(borderPane, 1400, 900);
+        mainScene = new Scene(borderPane, 1920, 1080);
         window.setScene(startScene);
         window.setTitle("Flaggentrainer");
         window.setResizable(false);
@@ -135,6 +159,7 @@ public class FlagGUI extends Application {
 
     //Diese Methode reformatiert den String für die Ausgabe in resultBox
     private static String reverseFormat(String s) {
+
         s = s.replace('-', ' ');
         s = s.replace("ae", "ä");
         s = s.replace("oe", "ö");
@@ -152,5 +177,43 @@ public class FlagGUI extends Application {
             }
         }
         return name.toString();
+    }
+
+    private static void updateLabels(){
+        String r = "Richtig: ";
+        String f = "Falsch: ";
+        String p = "Prozent: ";
+
+        richtigLabel.setText(r + richtigCounter);
+        falschLabel.setText(f + falschCounter);
+        prozentLabel.setText(p + Math.round(100*richtigCounter/(richtigCounter+falschCounter))+"%");
+    }
+
+    private static InputStream newFlag(AtomicInteger id){
+        id.set((int) (Math.random() * landListe.size()));
+        InputStream newFlagDir = null;
+        try {
+            newFlagDir = new FileInputStream(landListe.get(id.get()).getFlag());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return newFlagDir;
+    }
+
+    private static void getResult(String s, AtomicInteger id){
+        String inputString = s;
+        inputString = format(inputString);
+        //Wenn die Eingabe mit dem Namen oder der TDL übereinstimmt
+        if (inputString.equals(landListe.get(id.get()).getName()) || inputString.equals(landListe.get(id.get()).getTDL())) {
+            System.out.println("True");
+            richtigCounter ++;
+            resultLabel.setText("Richtig!");
+            resultLabel.setStyle("-fx-text-fill: green; -fx-font-size: 24px;");
+        } else /*Wenn die Eingabe nich mit dem Namen oder der TDL übereinstimm*/ {
+            System.out.println("False");
+            falschCounter ++;
+            resultLabel.setText("Falsch! Das ist die Flagge von " + reverseFormat(landListe.get(id.get()).getName()));
+            resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 24px;");
+        }
     }
 }
