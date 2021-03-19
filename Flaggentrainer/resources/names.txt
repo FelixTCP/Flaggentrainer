@@ -82,8 +82,8 @@ kirgisistan/kg
 kiribati/ki
 kolumbien/co
 komoren/km
-dr.kongo/cd
-r.kongo/cg
+dr.-kongo/cd
+r.-kongo/cg
 nordkorea/kp
 suedkorea/kr
 kosovo/xk
