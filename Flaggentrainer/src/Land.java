@@ -4,22 +4,26 @@ public class Land {
     private String flag;
     private String TDL;
 
-    Land(String n, int i, String f,String tdl){
+    Land(String n, int i, String f, String tdl) {
         name = n;
         id = i;
         flag = f;
         TDL = tdl;
     }
 
+    public int getId() {
+        return id;
+    }
 
-    public int getId() { return id; }
+    public String getFlag() {
+        return flag;
+    }
 
-    public String getFlag() { return flag; }
-
-    public String getTDL() { return TDL; }
+    public String getTDL() {
+        return TDL;
+    }
 
     public String getName() {
         return name;
     }
-
 }
