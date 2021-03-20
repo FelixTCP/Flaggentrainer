@@ -194,7 +194,7 @@ vanuatu/vu
 vatikanstadt/va
 venezuela/ve
 vereinigte-arabische-emirate/ae
-vereinigte-staaten/ua
+vereinigte-staaten/us
 vereinigtes-koenigreich/uk
 vietnam/vn
 belarus/by
