@@ -46,14 +46,13 @@ class FalseAlert {
         } else {
             nextButton = new Button("Next");
         }
+        backButton.setMinWidth(50);
         nextButton.setMinWidth(50);
-
 
         buttons.getChildren().addAll(backButton, nextButton);
 
         buttons.setAlignment(Pos.CENTER);
         buttons.setMinHeight(100);
-
 
         HBox flagPic = new HBox();
         flagDir = new FileInputStream(falseListe.get(index).getFlag());
@@ -148,8 +147,8 @@ class FalseAlert {
                 fileNotFoundException.printStackTrace();
             }
         } else {
-            FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * FlagGUI.richtigCounter / (FlagGUI.richtigCounter + FlagGUI.falschCounter)) + "% " + "richtig bennant!", retry);
             window.close();
+            FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * FlagGUI.richtigCounter / (FlagGUI.richtigCounter + FlagGUI.falschCounter)) + "% " + "richtig bennant!", retry);
         }
     }
 }
