@@ -29,14 +29,6 @@ public class FlagGUI extends Application {
 
     static int flaggenCounter = 0;
 
-    static {
-        try {
-            landListe = Listcreation.create();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     TextField inputField;
     Button startButton, checkButton;
     static Label resultLabel, richtigLabel, falschLabel, prozentLabel;
@@ -54,7 +46,6 @@ public class FlagGUI extends Application {
         //landListe wird erstellt
         landListe = Listcreation.create();
 
-
         //Es wird eine zufällige zu erratende Flagge bestimmt
         //Es wird eine Zufällige Land ID generiert
         AtomicInteger id = new AtomicInteger((int) (Math.random() * landListe.size()));
@@ -64,8 +55,6 @@ public class FlagGUI extends Application {
         ImageView flagImage = new ImageView(image);
         flagImage.setPreserveRatio(true);
 
-        //Das zugehörige Objekt in landListe wird ausgegeben - for Debug
-        System.out.println(landListe.get(id.get()).getName());
         //Startmenu wird erstellt
         //Es wird ein Startbutton erstellt
         startButton = new Button("Start");
@@ -169,7 +158,6 @@ public class FlagGUI extends Application {
 
     //Diese Methode reformatiert den String für die Ausgabe in resultBox
     private static String reverseFormat(String s) {
-
         s = s.replace('-', ' ');
         s = s.replace("ae", "ä");
         s = s.replace("oe", "ö");
