@@ -176,6 +176,7 @@ public class FlagGUI extends Application {
     //Diese Methode reformatiert den String für die Ausgabe in resultBox
     static String reverseFormat(String s) {
         if (s.equals("niue")) return "Niue";
+        if (s.equals("litauen")) return "Litauen";
 
         s = s.replace('-', ' ');
         s = s.replace("ae", "ä");
