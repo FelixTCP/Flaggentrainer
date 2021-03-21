@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Listcreation {
+class Listcreation {
     public static ArrayList<Land> create() throws IOException {
         //In landListe werden die Objekte der Klasse Land verwaltet
         ArrayList<Land> landListe = new ArrayList<>();

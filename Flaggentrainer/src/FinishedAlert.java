@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class FinishedAlert {
+class FinishedAlert {
     public static void display(String title, String message) {
         Stage window = new Stage();
 

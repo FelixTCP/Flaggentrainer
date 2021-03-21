@@ -1,4 +1,4 @@
-public class FalseGuess {
+class FalseGuess {
     private String rightName;
     private String falseName;
     private String flag;

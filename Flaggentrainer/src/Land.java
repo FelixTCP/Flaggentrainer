@@ -1,14 +1,14 @@
-public class Land {
+class Land {
     private String name;
     private int id;
     private String flag;
     private String TDL;
 
-    Land(String n, int i, String f, String tdl) {
-        name = n;
-        id = i;
-        flag = f;
-        TDL = tdl;
+    public Land(String name, int id, String flag, String TDL) {
+        this.name = name;
+        this.id = id;
+        this.flag = flag;
+        this.TDL = TDL;
     }
 
     public int getId() {
