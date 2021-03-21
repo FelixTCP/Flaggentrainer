@@ -29,10 +29,14 @@ class FalseAlert {
 
     private static int index;
 
-    public static void display() throws FileNotFoundException {
+    private static boolean retry;
+
+    public static void display(boolean retry) throws FileNotFoundException {
         window = new Stage();
 
         index = 0;
+
+        FalseAlert.retry =retry;
 
         HBox buttons = new HBox();
         backButton = new Button("Back");
@@ -42,6 +46,7 @@ class FalseAlert {
         } else {
             nextButton = new Button("Next");
         }
+        nextButton.setMinWidth(50);
 
 
         buttons.getChildren().addAll(backButton, nextButton);
@@ -143,7 +148,7 @@ class FalseAlert {
                 fileNotFoundException.printStackTrace();
             }
         } else {
-            FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * FlagGUI.richtigCounter / (FlagGUI.richtigCounter + FlagGUI.falschCounter)) + "% " + "richtig bennant!");
+            FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * FlagGUI.richtigCounter / (FlagGUI.richtigCounter + FlagGUI.falschCounter)) + "% " + "richtig bennant!", retry);
             window.close();
         }
     }

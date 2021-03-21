@@ -109,7 +109,7 @@ public class FlagGUI extends Application {
         closeButton.setOnAction(event -> {
             try {
                 window.close();
-                FalseAlert.display();
+                FalseAlert.display(false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -127,6 +127,7 @@ public class FlagGUI extends Application {
         HBox eingabe = new HBox();
         inputField = new TextField();
         checkButton = new Button("Check");
+        checkButton.setMinWidth(50);
         AtomicInteger enterPressed = new AtomicInteger();
         inputField.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER /*&& !inputField.getText().equals("")*/) {
@@ -212,7 +213,7 @@ public class FlagGUI extends Application {
         try {
             flaggenCounter++;
             if (landListe.isEmpty()) {
-                FalseAlert.display();
+                FalseAlert.display(true);
             }
             newFlagDir = new FileInputStream(landListe.get(id.get()).getFlag());
         } catch (FileNotFoundException e) {

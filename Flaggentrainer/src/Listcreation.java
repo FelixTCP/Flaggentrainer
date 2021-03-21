@@ -13,8 +13,9 @@ class Listcreation {
         ArrayList<String> names = new ArrayList<>();
 
         //das Dokument "flag.txt" wird eingescannt und in names eingefügt
-        String path = new File("Flaggentrainer\\resources")
+        String path = new File("Flaggentrainer\\src\\resources")
                 .getAbsolutePath();
+
         try (BufferedReader br = new BufferedReader(new FileReader(path + "\\names.txt"))) {
             while (br.ready()) {
                 names.add(br.readLine());

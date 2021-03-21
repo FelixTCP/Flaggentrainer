@@ -8,7 +8,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 class FinishedAlert {
-    public static void display(String title, String message) {
+    public static void display(String title, String message, boolean retry) {
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -34,7 +34,8 @@ class FinishedAlert {
         midlayout.setAlignment(Pos.CENTER);
 
         HBox botlayout = new HBox();
-        botlayout.getChildren().addAll(replayButton, closeButton);
+        if(retry) botlayout.getChildren().addAll(replayButton, closeButton);
+        else botlayout.getChildren().addAll(closeButton);
         botlayout.setAlignment(Pos.CENTER);
 
         BorderPane bp = new BorderPane();
