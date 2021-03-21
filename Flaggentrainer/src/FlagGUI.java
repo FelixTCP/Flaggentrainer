@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FlagGUI extends Application {
 
     static ArrayList<Land> landListe;
+    static ArrayList<FalseGuess> falseListe;
     static int richtigCounter;
     static int falschCounter;
     static Stage window;
@@ -38,6 +39,10 @@ public class FlagGUI extends Application {
         launch(args);
     }
 
+    public static ArrayList<FalseGuess> getFalseListe() {
+        return falseListe;
+    }
+
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -45,6 +50,10 @@ public class FlagGUI extends Application {
 
         //landListe wird erstellt
         landListe = Listcreation.create();
+
+        //falseListe wird erstellt
+        falseListe = new ArrayList<>();
+
 
         //Es wird eine zufällige zu erratende Flagge bestimmt
         //Es wird eine Zufällige Land ID generiert
@@ -97,7 +106,14 @@ public class FlagGUI extends Application {
         prozentLabel.setText(p + 0 + "%");
         prozentLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24px;");
         Button closeButton = new Button("Beenden");
-        closeButton.setOnAction(event -> close());
+        closeButton.setOnAction(event -> {
+            try {
+                window.close();
+                FalseAlert.display();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
         percentBox.setAlignment(Pos.TOP_RIGHT);
         percentBox.getChildren().addAll(prozentLabel, closeButton);
 
@@ -157,7 +173,9 @@ public class FlagGUI extends Application {
     }
 
     //Diese Methode reformatiert den String für die Ausgabe in resultBox
-    private static String reverseFormat(String s) {
+    static String reverseFormat(String s) {
+        if (s.equals("niue")) return "Niue";
+
         s = s.replace('-', ' ');
         s = s.replace("ae", "ä");
         s = s.replace("oe", "ö");
@@ -194,6 +212,7 @@ public class FlagGUI extends Application {
         try {
             flaggenCounter++;
             if (landListe.isEmpty()) {
+                FalseAlert.display();
                 FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * richtigCounter / (richtigCounter + falschCounter)) + "% " + "richtig bennant!");
             }
             newFlagDir = new FileInputStream(landListe.get(id.get()).getFlag());
@@ -216,6 +235,9 @@ public class FlagGUI extends Application {
             falschCounter++;
             resultLabel.setText("Falsch! Das ist die Flagge von " + reverseFormat(landListe.get(id.get()).getName()));
             resultLabel.setStyle("-fx-text-fill: red; -fx-font-size: 24px;");
+
+            falseListe.add(new FalseGuess(landListe.get(id.get()).getName(), s, landListe.get(id.get()).getFlag()));
+
             return false;
         }
     }
@@ -224,7 +246,7 @@ public class FlagGUI extends Application {
                                  AtomicInteger id,
                                  TextField inputField,
                                  ImageView flagImage,
-                                 Button checkButton){
+                                 Button checkButton) {
         if (enterPressed.get() == 0) {
             //Die Ergebnisse werden ermittelt
             if (getResult(inputField.getText(), id)) {
