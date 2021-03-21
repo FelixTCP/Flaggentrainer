@@ -213,7 +213,6 @@ public class FlagGUI extends Application {
             flaggenCounter++;
             if (landListe.isEmpty()) {
                 FalseAlert.display();
-                FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * richtigCounter / (richtigCounter + falschCounter)) + "% " + "richtig bennant!");
             }
             newFlagDir = new FileInputStream(landListe.get(id.get()).getFlag());
         } catch (FileNotFoundException e) {
@@ -294,6 +293,16 @@ public class FlagGUI extends Application {
 
         try {
             landListe = Listcreation.create();
+            falseListe.clear();
+            window.setFullScreen(true);
+
+            String r = "Richtig: ";
+            String f = "Falsch: ";
+            String p = "Prozent: ";
+
+            richtigLabel.setText(r + richtigCounter);
+            falschLabel.setText(f + falschCounter);
+            prozentLabel.setText(p + 0 + "%");
         } catch (IOException e) {
             e.printStackTrace();
         }

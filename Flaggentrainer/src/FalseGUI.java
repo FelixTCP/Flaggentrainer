@@ -27,10 +27,12 @@ class FalseAlert {
     private static InputStream flagDir;
     private static ImageView flagImage;
 
-    private static int index = 0;
+    private static int index;
 
     public static void display() throws FileNotFoundException {
         window = new Stage();
+
+        index = 0;
 
         HBox buttons = new HBox();
         backButton = new Button("Back");
@@ -141,6 +143,7 @@ class FalseAlert {
                 fileNotFoundException.printStackTrace();
             }
         } else {
+            FinishedAlert.display("Beendet", "Alle Flaggen sind durch! " + Math.round(100 * FlagGUI.richtigCounter / (FlagGUI.richtigCounter + FlagGUI.falschCounter)) + "% " + "richtig bennant!");
             window.close();
         }
     }
