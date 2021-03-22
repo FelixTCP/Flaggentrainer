@@ -12,7 +12,7 @@ class Listcreation {
         //names wird benötigt, um die Objetke der Klasse Land entsprechend mit name und tdl zu erstellen
         ArrayList<String> names = new ArrayList<>();
 
-        //das Dokument "flag.txt" wird eingescannt und in names eingefügt
+        //Das Dokument "flag.txt" wird eingelesen und in names eingefügt
         String path = new File("Flaggentrainer\\resources")
                 .getAbsolutePath();
 
@@ -25,7 +25,7 @@ class Listcreation {
         //Die Objekte der Klasse Land werden erstellt und in landListe eingefügt
         for (int i = 0; i < names.size(); i++) {
             String n = names.get(i);
-            String[] constructArray = n.split("/"); //aus dem String "name/tdl" wir dein Array [name,tdl]
+            String[] constructArray = n.split("/"); //aus dem String "name/tdl" wird ein Array [name,tdl]
             String flagDir = path + "\\flags\\" + constructArray[1] + ".png";
 
             landListe.add(new Land(constructArray[0], i, flagDir, constructArray[1]));
