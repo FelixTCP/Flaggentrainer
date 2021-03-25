@@ -20,18 +20,16 @@ class FalseAlert {
     private static ArrayList<FalseGuess> falseListe = FlagGUI.getFalseListe();
 
     private static Stage window;
-    private static Scene mainScene;
     private static Label rightLabel, falseLabel, loadingBarLabel;
-    private static Button backButton, nextButton;
+    private static Button nextButton;
 
-    private static InputStream flagDir;
     private static ImageView flagImage;
 
     private static int index;
 
     private static boolean retry;
 
-    public static void display(boolean retry) throws FileNotFoundException {
+    public void display(boolean retry) throws FileNotFoundException {
         window = new Stage();
 
         index = 0;
@@ -39,7 +37,7 @@ class FalseAlert {
         FalseAlert.retry =retry;
 
         HBox buttons = new HBox();
-        backButton = new Button("Back");
+        Button backButton = new Button("Back");
         System.out.println(falseListe.size());
         if (falseListe.size() == 1) {
             nextButton = new Button("End");
@@ -55,7 +53,7 @@ class FalseAlert {
         buttons.setMinHeight(100);
 
         HBox flagPic = new HBox();
-        flagDir = new FileInputStream(falseListe.get(index).getFlag());
+        InputStream flagDir = getClass().getResourceAsStream(falseListe.get(index).getFlag());
         Image image = new Image(flagDir);
         flagImage = new ImageView(image);
         flagImage.setPreserveRatio(true);
@@ -86,7 +84,7 @@ class FalseAlert {
         borderPane.setBottom(buttons);
         borderPane.setStyle("-fx-background-color: #696969;");
 
-        mainScene = new Scene(borderPane, 1920, 1080);
+        Scene mainScene = new Scene(borderPane, 1920, 1080);
 
         mainScene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.A || e.getCode() == KeyCode.LEFT) {
@@ -107,8 +105,8 @@ class FalseAlert {
         window.show();
     }
 
-    private static void setNewFlag() throws FileNotFoundException {
-        flagDir = new FileInputStream(falseListe.get(index).getFlag());
+    private void setNewFlag() throws FileNotFoundException {
+        InputStream flagDir = getClass().getResourceAsStream(falseListe.get(index).getFlag());
         Image image = new Image(flagDir);
         flagImage.setImage(image);
     }
@@ -119,7 +117,7 @@ class FalseAlert {
         loadingBarLabel.setText("(" + (index + 1) + "/" + falseListe.size() + ")");
     }
 
-    private static void back() {
+    private  void back() {
         if (index > 0) {
             try {
                 index--;
@@ -134,7 +132,7 @@ class FalseAlert {
         }
     }
 
-    private static void next() {
+    private  void next() {
         if (index + 1 < falseListe.size()) {
             try {
                 index++;
