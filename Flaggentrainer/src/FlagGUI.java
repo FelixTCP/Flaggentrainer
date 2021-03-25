@@ -49,7 +49,9 @@ public class FlagGUI extends Application {
         window = primaryStage;
 
         //landListe wird erstellt
-        landListe = Listcreation.create();
+        Landliste laender = new Landliste();
+
+        landListe = laender.resetListe();
 
         //falseListe wird erstellt
         falseListe = new ArrayList<>();
@@ -59,7 +61,7 @@ public class FlagGUI extends Application {
         //Es wird eine Zufällige Land ID generiert
         AtomicInteger id = new AtomicInteger((int) (Math.random() * landListe.size()));
         //Das Flammenimage für das GUI wird initialisiert und konfiguriert
-        InputStream flagDir = new FileInputStream(landListe.get(id.get()).getFlag());
+        InputStream flagDir = getClass().getResourceAsStream(landListe.get(id.get()).getFlag());
         Image image = new Image(flagDir);
         ImageView flagImage = new ImageView(image);
         flagImage.setPreserveRatio(true);
@@ -109,7 +111,8 @@ public class FlagGUI extends Application {
         closeButton.setOnAction(event -> {
             try {
                 window.close();
-                FalseAlert.display(false);
+                FalseAlert fa = new FalseAlert();
+                fa.display(false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -174,7 +177,7 @@ public class FlagGUI extends Application {
     }
 
     //Diese Methode reformatiert den String für die Ausgabe in resultBox
-    static String reverseFormat(String s) {
+    protected static String reverseFormat(String s) {
         if (s.equals("niue")) return "Niue";
         if (s.equals("litauen")) return "Litauen";
 
@@ -207,16 +210,17 @@ public class FlagGUI extends Application {
         prozentLabel.setText(p + Math.round(100 * richtigCounter / (richtigCounter + falschCounter)) + "%");
     }
 
-    private static InputStream newFlag(AtomicInteger id) {
+    private InputStream newFlag(AtomicInteger id) {
         landListe.remove(id.get());
         id.set((int) (Math.random() * landListe.size()));
         InputStream newFlagDir = null;
         try {
             flaggenCounter++;
             if (landListe.isEmpty()) {
-                FalseAlert.display(true);
+                FalseAlert fa = new FalseAlert();
+                fa.display(true);
             }
-            newFlagDir = new FileInputStream(landListe.get(id.get()).getFlag());
+            newFlagDir = getClass().getResourceAsStream(landListe.get(id.get()).getFlag());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -243,7 +247,7 @@ public class FlagGUI extends Application {
         }
     }
 
-    private static void nextFlag(AtomicInteger enterPressed,
+    private void nextFlag(AtomicInteger enterPressed,
                                  AtomicInteger id,
                                  TextField inputField,
                                  ImageView flagImage,
@@ -293,20 +297,17 @@ public class FlagGUI extends Application {
         richtigCounter = 0;
         falschCounter = 0;
 
-        try {
-            landListe = Listcreation.create();
-            falseListe.clear();
-            window.setFullScreen(true);
+        Landliste laender = new Landliste();
+        landListe = laender.resetListe();
+        falseListe.clear();
+        window.setFullScreen(true);
 
-            String r = "Richtig: ";
-            String f = "Falsch: ";
-            String p = "Prozent: ";
+        String r = "Richtig: ";
+        String f = "Falsch: ";
+        String p = "Prozent: ";
 
-            richtigLabel.setText(r + richtigCounter);
-            falschLabel.setText(f + falschCounter);
-            prozentLabel.setText(p + 0 + "%");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        richtigLabel.setText(r + richtigCounter);
+        falschLabel.setText(f + falschCounter);
+        prozentLabel.setText(p + 0 + "%");
     }
 }
