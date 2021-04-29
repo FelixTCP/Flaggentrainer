@@ -20,15 +20,12 @@ public class Landliste {
             while (reader.ready()) {
                 names.add(reader.readLine());
             }
-            for (int i = 0; i < names.size(); i++) {
-                String n = names.get(i);
+            for (String n : names) {
                 String[] constructArray = n.split("/"); //aus dem String "name/tdl" wird ein Array [name,tdl]
                 //InputStream flagDir = getClass().getResourceAsStream("/flags/" + constructArray[1] + ".png");
 
-                deepList.add(new Land(constructArray[0], "/flags/" + constructArray[1] + ".png", constructArray[1]));
+                deepList.add(new Land(constructArray[0], constructArray[1], constructArray[2], constructArray[3], constructArray[4], "/flags/" + constructArray[1] + ".png"));
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

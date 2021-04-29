@@ -1,27 +1,40 @@
 class Land {
-    private String name;
-    private String flag;
-    private String TDL;
+    private String name,name2,name3,name4,TDL,flag;
 
-    public Land(String name, String flag, String TDL) {
+    public Land(String name, String TDL, String name2, String name3, String name4, String flag) {
         this.name = name;
-        this.flag = flag;
+        this.name2 = name2;
+        this.name3 = name3;
+        this.name4 = name4;
         this.TDL = TDL;
-    }
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public String getTDL() {
-        return TDL;
+        this.flag = flag;
     }
 
     public String getName() {
         return name;
     }
 
+    public String getName2() {
+        return name2;
+    }
+
+    public String getName3() {
+        return name3;
+    }
+
+    public String getName4() {
+        return name4;
+    }
+
+    public String getTDL() {
+        return TDL;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
     public Land copy() {
-        return new Land(name,flag,TDL);
+        return new Land(name,TDL,name2,name3,name4,flag);
     }
 }
