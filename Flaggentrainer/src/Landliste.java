@@ -24,7 +24,7 @@ public class Landliste {
                 String[] constructArray = n.split("/"); //aus dem String "name/tdl" wird ein Array [name,tdl]
                 //InputStream flagDir = getClass().getResourceAsStream("/flags/" + constructArray[1] + ".png");
 
-                deepList.add(new Land(constructArray[0], constructArray[1], constructArray[2], constructArray[3], constructArray[4], "/flags/" + constructArray[1] + ".png"));
+                deepList.add(new Land(constructArray[0], constructArray[1], "/flags/" + constructArray[1] + ".png"));
             }
         } catch (IOException e) {
             e.printStackTrace();
