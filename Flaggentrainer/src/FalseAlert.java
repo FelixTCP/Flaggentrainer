@@ -117,7 +117,7 @@ class FalseAlert {
         loadingBarLabel.setText("(" + (index + 1) + "/" + falseListe.size() + ")");
     }
 
-    private  void back() {
+    private void back() {
         if (index > 0) {
             try {
                 index--;
@@ -132,7 +132,7 @@ class FalseAlert {
         }
     }
 
-    private  void next() {
+    private void next() {
         if (index + 1 < falseListe.size()) {
             try {
                 index++;
